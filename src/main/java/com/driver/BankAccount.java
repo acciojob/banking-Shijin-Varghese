@@ -1,5 +1,9 @@
 package com.driver;
 
+import java.util.Random;
+
+import static java.lang.Math.min;
+
 public class BankAccount {
 
     private String name;
@@ -10,20 +14,58 @@ public class BankAccount {
 
     }
 
-    public String generateAccountNumber(int digits, int sum) throws Exception{
-        //Each digit of an account number can lie between 0 and 9 (both inclusive)
-        //Generate account number having given number of 'digits' such that the sum of digits is equal to 'sum'
-        //If it is not possible, throw "Account Number can not be generated" exception
+    public String getName() {
+        return name;
+    }
 
-        return null;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public double getMinBalance() {
+        return minBalance;
+    }
+
+    public void setMinBalance(double minBalance) {
+        this.minBalance = minBalance;
+    }
+
+    public String generateAccountNumber(int digits, int sum) throws Exception{
+        if(sum < 0) {
+            throw new AccountNumberCannotBeGeneratedException("Account Number can not be generated");
+        }
+        String acNo = "";
+        Random rand = new Random();
+        int n;
+        int remainingSum = sum;
+        for(int i=0;i<digits;i++) {
+            int max = min(remainingSum+1, 10);
+            n = rand.nextInt(max);
+            acNo += String.valueOf(n);
+            remainingSum -= n;
+        }
+        return acNo;
     }
 
     public void deposit(double amount) {
+        this.balance += amount;
         //add amount to balance
 
     }
 
     public void withdraw(double amount) throws Exception {
+        if(this.balance < amount) {
+            throw new Exception("Insufficient Balance");
+        }
+        this.balance -= amount;
         // Remember to throw "Insufficient Balance" exception, if the remaining amount would be less than minimum balance
 
     }
