@@ -12,10 +12,21 @@ public class StudentAccount extends BankAccount{
         this.institutionName = institutionName;
     }
 
+
     public StudentAccount(String name, double balance, String  institutionName) {
-        super(name, balance, 0);
-        this.institutionName = institutionName;
         //minimum balance is 0 by default
+
+        super(name, balance);
+        this.institutionName = institutionName;
+
+    }
+
+    public StudentAccount(String name, String  institutionName) {
+        //minimum balance is 0 by default
+
+        super(name, 0);
+        this.institutionName = institutionName;
+
     }
 
 }

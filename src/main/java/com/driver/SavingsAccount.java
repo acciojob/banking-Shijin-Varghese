@@ -1,20 +1,8 @@
 package com.driver;
 
-
 public class SavingsAccount extends BankAccount{
     double rate;
     double maxWithdrawalLimit;
-
-    int nWithdraws;
-
-    public SavingsAccount(String name, double balance, double maxWithdrawalLimit, double rate) {
-        super(name, balance, 0);
-        this.maxWithdrawalLimit = maxWithdrawalLimit;
-        this.rate = rate;
-        this.nWithdraws = 0;
-        // minimum balance is 0 by default
-
-    }
 
     public double getRate() {
         return rate;
@@ -32,38 +20,58 @@ public class SavingsAccount extends BankAccount{
         this.maxWithdrawalLimit = maxWithdrawalLimit;
     }
 
-    public int getnWithdraws() {
-        return nWithdraws;
-    }
+    public SavingsAccount(String name, double balance, double maxWithdrawalLimit, double rate) {
+        // minimum balance is 0 by default
 
-    public void setnWithdraws(int nWithdraws) {
-        this.nWithdraws = nWithdraws;
-    }
+        super(name, 0);
+        this.rate = rate;
+        this.maxWithdrawalLimit = maxWithdrawalLimit;
 
+    }
+    public SavingsAccount(String name, double maxWithdrawalLimit, double rate) {
+        // minimum balance is 0 by default
+
+        super(name, 0);
+        this.rate = rate;
+        this.maxWithdrawalLimit = maxWithdrawalLimit;
+
+    }
     public void withdraw(double amount) throws Exception {
-        if(nWithdraws > maxWithdrawalLimit) {
-            throw new Exception("Maximum Withdraw Limit Exceed");
-        }
-        if(amount > super.getBalance()) {
-            throw new Exception("Insufficient Balance");
-        }
-        super.setBalance(super.getBalance()-amount);
         // Might throw the following errors:
         // 1. "Maximum Withdraw Limit Exceed" : If the amount exceeds maximum withdrawal limit
         // 2. "Insufficient Balance" : If the amount exceeds balance
 
+        if (amount > maxWithdrawalLimit) {
+            throw new Exception("Maximum Withdraw Limit Exceed");
+        }
+
+        if (amount > super.getBalance()) {
+            throw new Exception("Insufficient Balance");
+        }
+
+        super.setBalance(super.getBalance() - amount);
     }
 
     public double getSimpleInterest(int years){
-        return rate * years * super.getBalance();
         // Return the final amount considering that bank gives simple interest on current amount
 
+        /*
+        Simple Interest = (P x T x R)/100
+        Where,
+        P is the principal amount
+        T is the time and
+        R is the rate
+         */
+
+        return (double) (super.getBalance() * years * rate) / 100;
     }
 
     public double getCompoundInterest(int times, int years){
-        return super.getBalance() * Math.pow( 1 + rate/times, years);
         // Return the final amount considering that bank gives compound interest on current amount given times per year
 
+        // Principle*(1+(rate / 100))^time – Principle
+
+        return (double) super.getBalance() * (Math.pow((1 + rate / 100), times))  - super.getBalance();
     }
 
 }
